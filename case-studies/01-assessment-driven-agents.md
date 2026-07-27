@@ -66,15 +66,21 @@ a SaaS venture with a PRD and a revenue model.
 
 ## The router
 
-All of this arrives through one Telegram thread. Before any conversation
-happens, two LLM classifiers read each message: one picks the mode the
-message actually needs (operator, coach, strategist), one tags what
-should happen to the work itself (eliminate, automate, delegate,
-optimize). The router maps
-the answer to an agent and a model. Four bare numbers in a row log mood,
-energy, stress, and anxiety silently, no reply. A voice note from one
-press of the iPhone Action Button gets transcribed, classified into one
-of eight categories, and filed into my vault in seconds.
+All of this arrives through one Telegram thread. Four bare numbers in a
+row log mood, energy, stress, and anxiety silently, no reply. A voice
+note from one press of the iPhone Action Button gets transcribed,
+classified into one of eight categories, and filed into my vault in
+seconds.
+
+I also built a classifier-based router for that thread: two LLM passes
+per message, one choosing the mode the message needs (operator, coach,
+strategist), one deciding what should happen to the work itself
+(eliminate, automate, delegate, optimize), mapping the pair to an agent
+and a model. Honest status: it is a prototype and not in the live path.
+Messages reach the fleet through the gateway today, and the router's
+model map went stale after I wrote it. I describe it because the design
+still looks right to me and I intend to revive it, not because it is
+running.
 
 The design principle across all of it: capture must be cheaper than
 avoidance. The moment logging something costs more than ignoring it, a
@@ -82,15 +88,14 @@ person with my profile stops logging.
 
 ```mermaid
 flowchart LR
-    M[Telegram message] --> R{Router}
+    M[Telegram message] --> R{Dispatch}
     R -->|"log: prefix"| T[Task file + ID reply]
     R -->|four bare numbers| L[Silent state log]
     R -->|voice note| V[Transcribe, classify 8 ways, file]
     R -->|research phrasing| Q[Overnight queue]
-    R -->|everything else| C{Mode classifier}
-    C --> OP[Operator agent]
-    C --> CO[Coach agent]
-    C --> ST[Strategist agent]
+    R -->|everything else| A[Agent fleet via gateway]
+    C{"Mode classifier<br/>(prototype, not wired)"}:::proto -.planned.-> A
+    classDef proto stroke-dasharray: 4 3,opacity:0.6
 ```
 
 ## The scorer does not trust me
