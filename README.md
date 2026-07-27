@@ -64,9 +64,11 @@ flowchart TD
 ```
 
 Local models (Ollama, MLX) handle mechanical work at zero marginal cost.
-Judgment tasks escalate to cloud models by explicit routing policy. The
-split is benchmarked, not vibes: local decode is fast enough for
-classification and transcription; reasoning goes to Claude.
+Judgment escalates to cloud models by an explicit routing policy. The
+split is measured, not assumed: a 20-trial harness put the local
+briefing agent at roughly 65% all-axes pass, with silent no-ops rather
+than fabrications as the dominant failure. Mechanical work stays local,
+judgment escalates, and some pipelines split one job across both.
 
 ## Case studies
 
@@ -82,6 +84,9 @@ The stories that explain how this machine came to exist:
 - [I Gave Agents My Email and Shell Access. Then I Designed for It.](case-studies/04-agent-security.md) -
   two-stage prompt injection defense, outbound redaction, and why the
   scanner must never judge for itself
+- [Cheap Models, Expensive Mistakes](case-studies/05-local-model-routing.md) -
+  benchmarking local models against frontier ones, a 20-trial reliability
+  harness, and where the local-to-cloud line actually belongs
 
 ## The systems
 
@@ -168,11 +173,43 @@ knows which of its own problems it can solve.
 The design goal: I should find out something broke from a log entry, not
 from silence.
 
-### 10. Local inference
-Ollama and MLX serve local models for classification, transcription, and
-TTS ([qwen3-tts](https://github.com/JustinTSmith/qwen3-tts), plus a
-[voice finetuning pipeline](https://github.com/JustinTSmith/voice-finetune)).
-Benchmarked against each other before choosing what runs where.
+### 10. Local inference and model routing
+Two local servers run alongside the cloud models: Ollama and an MLX
+server. What runs where was decided by measurement, not preference,
+because the whole point is to stop paying frontier prices for mechanical
+work.
+
+**Serving benchmark** (same model, Qwen3-8B 4-bit, identical prompt):
+MLX decoded at roughly 48 tokens per second against Ollama's 32, about
+1.5x faster. Ollama won anyway. The MLX server is single-threaded so
+concurrent requests hang, it dropped roughly one connection in four under
+load, and it threw transient errors. Ollama was slower per token and made
+zero errors across 80-plus calls, with real request queuing. A 1.5x speed
+edge you cannot safely parallelize is not an edge. The agent fleet runs
+on Ollama; MLX serves the voice layer and one hot model where raw speed
+matters and concurrency does not.
+
+**The escalation policy** is the part that matters. Work is routed by
+stakes, not by preference:
+
+- Mechanical work stays local: transcription, the eight-way voice-note
+  classification, embeddings, the local worker agent on Qwen3-8B
+- Judgment escalates to cloud models: the operator and self-improvement
+  agents run on Claude Sonnet
+- Some pipelines split a single job across both. The weekly briefing
+  analyzes the full newsletter corpus on a local 35B model, then hands
+  the analysis to Claude Opus to write. The expensive model never reads
+  the raw pile, only the distilled version, which is where the cost
+  actually goes
+
+**Why the line sits there** is documented in
+[Cheap Models, Expensive Mistakes](case-studies/05-local-model-routing.md):
+I built an evaluation harness and measured it rather than guessing.
+
+Public code: [qwen3-tts](https://github.com/JustinTSmith/qwen3-tts),
+[voice-finetune](https://github.com/JustinTSmith/voice-finetune), and
+`benchmark.py` in
+[personal-scripts](https://github.com/JustinTSmith/personal-scripts).
 
 ### 11. Skill compiler
 Books become agent behavior. A converter skill
