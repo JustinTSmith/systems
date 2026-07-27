@@ -79,6 +79,9 @@ The stories that explain how this machine came to exist:
 - [One Sentence In, One Company Out](case-studies/03-psychbill-idea-to-company.md) -
   how one logged sentence became PsychBill, through the overnight queue,
   a PRD, a revenue model, and an agent company
+- [I Gave Agents My Email and Shell Access. Then I Designed for It.](case-studies/04-agent-security.md) -
+  two-stage prompt injection defense, outbound redaction, and why the
+  scanner must never judge for itself
 
 ## The systems
 
