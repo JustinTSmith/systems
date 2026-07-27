@@ -39,14 +39,14 @@ flowchart TD
     subgraph Pipelines
         GM[gmail-automation] --> CRM[personal-crm<br/>6-phase scoring]
         VP[voice processor<br/>transcribe, classify 8 ways, file]
-        WB[weekly briefings x4<br/>parallel Monday scans]
+        WB[weekly diff x4 scans<br/>to briefing to NotebookLM audio]
         MI[meeting-intelligence<br/>recording to tracker tasks]
     end
 
     subgraph Reliability
         WD[ai_watchdog<br/>auto-restart via launchctl]
         PH[platform_health nightly<br/>+ hourly git push]
-        SC[security_council nightly<br/>6 collectors, 5 AI perspectives]
+        SC[security_council nightly<br/>6 collectors, 4 AI perspectives]
         SEC[injection defense<br/>+ outbound redaction]
         DASH[services dashboard]
     end
@@ -113,7 +113,8 @@ The same intelligence, delivered where I will actually consume it: a
 Telegram message at 6am, an outbound phone call at 7am (script reads the
 vault, rewrites in a coach persona, synthesizes audio, Twilio dials), and
 four parallel weekly scans every Monday covering AI infrastructure,
-sales signals, competitors, and client verticals. Public output:
+sales signals, competitors, and client verticals, ending in a
+podcast-style audio overview (system 16). Public output:
 [weekly-briefings](https://github.com/JustinTSmith/weekly-briefings).
 Public code: `twilio_morning_call.py` in personal-scripts.
 
@@ -243,10 +244,39 @@ has to be written into the role, not hoped for.
 - 4 parallel weekly intelligence scans
 - 8 voice-note categories, filed automatically
 - 3 redundant triggers on the voice pipeline alone
+- 7-step research pipeline ending in a downloaded audio briefing
 - 13 agent companies, roughly 90 agents, from 3-agent teams to a 48-agent
   professional services org
 
-### 16. Agent security layer
+### 16. Research to audio pipeline
+The briefing chain ends in my ears, not my inbox. A seven-step pipeline
+runs the whole loop unattended:
+
+1. Load the week's signal diff, produced by four parallel research agents
+   scanning AI infrastructure, sales, competitors, and client verticals
+2. Fetch the newsletter stack from Gmail
+3. Analyze locally on an on-device model, with the diff as context
+4. Write the briefing with a frontier model, same context
+5. Save a local copy
+6. Create a Gmail draft
+7. Route the diff into a dedicated NotebookLM notebook, generate a
+   podcast-style audio overview against a written editorial brief, and
+   download the file
+
+Step 7 is the one that changed my behavior. A briefing I have to sit down
+and read competes with everything else I have to sit down and read. A
+fifteen-minute audio overview competes with nothing, because it runs
+while I drive or train. The pipeline is written so the audio step runs in
+the background and a failure there never blocks the briefing itself.
+
+The editorial brief matters as much as the sources: the notebook is told
+to cover structural shifts, what changed since last week, and three
+concrete actions. Without it, the generated audio drifts into summary.
+
+Related public output:
+[weekly-briefings](https://github.com/JustinTSmith/weekly-briefings).
+
+### 17. Agent security layer
 Running a fleet of agents with tool access, shell permissions, and my
 email is a security posture, whether or not you designed one. I designed
 one. Six layers:
