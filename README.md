@@ -1,6 +1,6 @@
 # The Machine
 
-62 scheduled services and roughly 90 agents on one Mac Studio, running
+69 scheduled jobs and roughly 90 agents on one Mac Studio, running
 my work, health, research, and two software ventures. This repo is the
 map: what runs, how the pieces connect, and which parts have public code.
 
@@ -247,7 +247,7 @@ has to be written into the role, not hoped for.
 
 ## Numbers
 
-- 62 registered LaunchAgents and cron jobs
+- 69 scheduled jobs: 43 LaunchAgents, 14 cron entries, 12 agent jobs
 - 14 services resident in memory right now (agents, gateways, databases,
   dashboards)
 - 4 parallel weekly intelligence scans
