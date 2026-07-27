@@ -66,6 +66,15 @@ Judgment tasks escalate to cloud models by explicit routing policy. The
 split is benchmarked, not vibes: local decode is fast enough for
 classification and transcription; reasoning goes to Claude.
 
+## Case studies
+
+The two stories that explain how this machine came to exist:
+
+- [The Assessment That Became an Operating System](case-studies/01-assessment-driven-agents.md) -
+  how a psychometric profile became the design constraints for an agent fleet
+- [Every Agent Wakes Up Knowing What the Others Did](case-studies/02-memory-spine.md) -
+  building cross-agent memory, and everything that broke on the way
+
 ## The systems
 
 ### 1. Memory spine
