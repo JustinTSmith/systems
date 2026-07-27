@@ -1,8 +1,8 @@
 # The Machine
 
-62 scheduled services and roughly 90 agents on one Mac Studio,
-running my work, health, research, and two software ventures. This repo is the map: what runs,
-how the pieces connect, and which parts have public code.
+62 scheduled services and roughly 90 agents on one Mac Studio, running
+my work, health, research, and two software ventures. This repo is the
+map: what runs, how the pieces connect, and which parts have public code.
 
 The configs and data stay private for obvious reasons. The architecture,
 the design decisions, and a good amount of the code do not. Where a
@@ -46,7 +46,8 @@ flowchart TD
     subgraph Reliability
         WD[ai_watchdog<br/>auto-restart via launchctl]
         PH[platform_health nightly<br/>+ hourly git push]
-        SC[security_council nightly]
+        SC[security_council nightly<br/>6 collectors, 5 AI perspectives]
+        SEC[injection defense<br/>+ outbound redaction]
         DASH[services dashboard]
     end
 
@@ -59,6 +60,7 @@ flowchart TD
     WB --> CALL
     WD -.watches.-> Agents
     WD -.watches.-> Pipelines
+    SEC -.guards.-> Agents
 ```
 
 Local models (Ollama, MLX) handle mechanical work at zero marginal cost.
@@ -141,10 +143,17 @@ tool-calling loop, API tools, and approval gating.
 
 ### 9. Self-healing layer
 A watchdog daemon monitors the AI services and restarts them through
-launchctl when they die. Nightly platform health checks commit their
-reports hourly. A nightly security review scans for drift. Two live
-dashboards show the fleet. The design goal: I should find out something
-broke from a log entry, not from silence.
+launchctl when they die. Beyond restarts, two nightly orchestrators run
+real diagnosis. The platform health reporter runs 9 check modules
+concurrently (backups, configs, cron coverage, gateway, git, logs,
+skills) and delivers a numbered digest to Telegram. Every item supports
+`--drill N` for full detail and `--heal N` to execute the fix, or
+`--heal all`. Findings are not a wall of text I learn to ignore; they
+are a numbered list where the fix is one command away, and the system
+knows which of its own problems it can solve.
+
+The design goal: I should find out something broke from a log entry, not
+from silence.
 
 ### 10. Local inference
 Ollama and MLX serve local models for classification, transcription, and
@@ -234,11 +243,45 @@ has to be written into the role, not hoped for.
 - 13 agent companies, roughly 90 agents, from 3-agent teams to a 48-agent
   professional services org
 
+### 16. Agent security layer
+Running a fleet of agents with tool access, shell permissions, and my
+email is a security posture, whether or not you designed one. I designed
+one. Six layers:
+
+1. **Gateway hardening** - the network surface the agents listen on
+2. **Channel access control** - which channels may reach which agents
+3. **Prompt injection defense** - two stages: regex patterns first, then
+   a semantic scanner that sends suspicious content to a *separate* LLM
+   for judgment. The design point: content under suspicion is never
+   evaluated inside the context it is trying to attack. An agent cannot
+   be trusted to assess an attack aimed at itself.
+4. **Secret protection** - an outbound redactor strips API keys, tokens,
+   and passwords from anything an agent sends; a PII redactor removes
+   emails, phones, addresses, and financial identifiers; a pre-commit
+   hook blocks secrets from reaching git
+5. **Automated monitoring** - a health check every 30 minutes and a
+   nightly review
+6. **System prompt rules** - the behavioral constraints every agent
+   inherits, versioned as a file rather than remembered
+
+A nightly security council orchestrates this: six static collectors
+(secrets, permissions, code execution surface, config audit, git
+history, log anomalies) run in parallel, then five separate AI
+perspectives analyze the findings, then a synthesis pass produces a
+numbered digest with the same drill-and-heal interface as the health
+reporter.
+
+I built this after an audit found real problems: credentials that had
+leaked into roughly ten places and needed rotating, and a service
+misconfiguration that silently broke a channel for days. Both are fixed.
+The layer exists because I found my own mistakes and decided finding
+them should be somebody's standing job.
+
 ## The pattern worth stealing
 
-Three of these systems (medical council, equity desk, and the goal
-engine's supervision chain) are the same architecture pointed at
-different problems: **give several agents genuinely incompatible
+Four of these systems (medical council, equity desk, the security
+council's five analytic perspectives, and the goal engine's supervision
+chain) are the same architecture pointed at different problems: **give several agents genuinely incompatible
 priors, make them work the same evidence independently, then force a
 written synthesis that records dissent instead of averaging it away.**
 
