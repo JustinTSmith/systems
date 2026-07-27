@@ -74,6 +74,9 @@ The two stories that explain how this machine came to exist:
   how a psychometric profile became the design constraints for an agent fleet
 - [Every Agent Wakes Up Knowing What the Others Did](case-studies/02-memory-spine.md) -
   building cross-agent memory, and everything that broke on the way
+- [One Sentence In, One Company Out](case-studies/03-psychbill-idea-to-company.md) -
+  how one logged sentence became PsychBill, through the overnight queue,
+  a PRD, a revenue model, and an agent company
 
 ## The systems
 
