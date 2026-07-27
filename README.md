@@ -19,10 +19,10 @@ flowchart TD
     end
 
     subgraph Routing
-        TR[telegram-router.js] --> MR[mode_router.py]
-        MR --> MC[LLM mode classifier<br/>operator / coach / strategist]
-        MR --> LC[LLM work-disposition classifier<br/>eliminate / automate / delegate / optimize]
+        GW[OpenClaw gateway<br/>live] --> AG[agent by ID]
+        MR["classifier router<br/>(prototype, not wired)"]:::proto
     end
+    classDef proto stroke-dasharray: 4 3,opacity:0.65
 
     subgraph Agents
         OC[OpenClaw fleet<br/>operator, self-improvement, worker-local]
@@ -51,11 +51,11 @@ flowchart TD
         DASH[services dashboard]
     end
 
-    TG --> TR
+    TG --> GW
     AB --> VP --> OB
     Agents --> MN
     Agents --> OB
-    MC --> OC
+    AG --> OC
     CC --> MN
     WB --> CALL
     WD -.watches.-> Agents
@@ -95,12 +95,21 @@ Built on Mnemo Cortex and gbrain (both third-party open source; I run,
 integrate, and extend them, I did not write them).
 
 ### 2. Message routing
-One Telegram thread is the interface to everything. Each message hits two
-LLM classifiers before any conversation logic: what mode does this need
-(operator, coach, strategist), and what should happen to the work
-itself (eliminate, automate, delegate, optimize). The router maps the
-answer to an agent and a model. Public code: [personal-scripts](https://github.com/JustinTSmith/personal-scripts)
-(`mode_router.py`, `mode_classifier_llm.py`, `telegram-router.js`).
+One Telegram thread is the interface to everything. Today the OpenClaw
+gateway (third-party, running) delivers messages to a three-agent fleet:
+operator, self-improvement, and a local worker. Scheduled jobs address
+agents directly by ID.
+
+I also built a classifier-based router as a prototype: two LLM passes on
+each inbound message, one choosing the mode the message needs (operator,
+coach, strategist) and one deciding what should happen to the work
+(eliminate, automate, delegate, optimize), mapping the pair to an agent
+and a model. **It is not currently wired into the live path.** The code
+is in [personal-scripts](https://github.com/JustinTSmith/personal-scripts)
+(`mode_router.py`, `mode_classifier_llm.py`, `route_models.py`) and its
+model map has gone stale. I am keeping it listed because the design is
+the interesting part and I intend to revive it, but a reader should know
+it is a prototype on the shelf, not a service in the fleet.
 
 ### 3. Voice pipeline
 One press of the iPhone Action Button. Audio lands in iCloud, a watcher
@@ -313,7 +322,7 @@ them should be somebody's standing job.
 ## The pattern worth stealing
 
 Four of these systems (medical council, equity desk, the security
-council's five analytic perspectives, and the goal engine's supervision
+council's four analytic perspectives, and the goal engine's supervision
 chain) are the same architecture pointed at different problems: **give several agents genuinely incompatible
 priors, make them work the same evidence independently, then force a
 written synthesis that records dissent instead of averaging it away.**
