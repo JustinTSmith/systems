@@ -150,6 +150,30 @@ TTS ([qwen3-tts](https://github.com/JustinTSmith/qwen3-tts), plus a
 [voice finetuning pipeline](https://github.com/JustinTSmith/voice-finetune)).
 Benchmarked against each other before choosing what runs where.
 
+### 11. Skill compiler
+Books become agent behavior. A converter skill
+([book-to-skill](https://github.com/JustinTSmith/ai-operator-skills))
+ingests any document (PDF, EPUB, DOCX, and more) and extracts structure
+rather than summary: named frameworks, actionable principles, techniques,
+anti-patterns, and the author's voice, layered into a skill an agent
+loads on demand. The proof it works is that the output supervises me:
+one book-derived skill auto-triggers whenever I review goals or weekly
+plans and checks every item against the book's framework. Reading a book
+once now leaves a permanent, executable residue in the fleet.
+
+### 12. Goal engine
+Goal setting runs as infrastructure, not intention. An interactive skill
+walks me through a psychologically grounded definition process built on
+Kegan and Lahey's Immunity to Change four-column analysis: vivid vision,
+anti-vision, identity requirements, and the hidden competing commitments
+that kill goals from below. It encodes my documented failure modes as
+design constraints (novelty chasing, over-designing systems instead of
+executing them) and writes the finished goal document into the vault,
+where the weekly planner decomposes it into priorities, the daily
+scheduler slots tasks onto the calendar, and the accountability agent
+checks in three times a day and reviews weekly. A goal here is not a
+wish; it is a config file with a supervision chain.
+
 ## Numbers
 
 - 62 registered LaunchAgents and cron jobs
