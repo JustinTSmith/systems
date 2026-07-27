@@ -1,7 +1,7 @@
 # The Machine
 
-62 scheduled services, one Mac Studio, running my work, health,
-relationships, and two software ventures. This repo is the map: what runs,
+62 scheduled services and roughly 90 agents on one Mac Studio,
+running my work, health, research, and two software ventures. This repo is the map: what runs,
 how the pieces connect, and which parts have public code.
 
 The configs and data stay private for obvious reasons. The architecture,
@@ -21,7 +21,7 @@ flowchart TD
     subgraph Routing
         TR[telegram-router.js] --> MR[mode_router.py]
         MR --> MC[LLM mode classifier<br/>operator / coach / strategist]
-        MR --> LC[LLM leverage classifier<br/>eliminate / automate / delegate / optimize]
+        MR --> LC[LLM work-disposition classifier<br/>eliminate / automate / delegate / optimize]
     end
 
     subgraph Agents
@@ -68,7 +68,7 @@ classification and transcription; reasoning goes to Claude.
 
 ## Case studies
 
-The two stories that explain how this machine came to exist:
+The stories that explain how this machine came to exist:
 
 - [The Assessment That Became an Operating System](case-studies/01-assessment-driven-agents.md) -
   how a psychometric profile became the design constraints for an agent fleet
@@ -92,9 +92,9 @@ integrate, and extend them, I did not write them).
 ### 2. Message routing
 One Telegram thread is the interface to everything. Each message hits two
 LLM classifiers before any conversation logic: what mode does this need
-(operator, coach, strategist), and what leverage class is it (eliminate,
-automate, delegate, optimize). The router maps the answer to an agent and
-a model. Public code: [personal-scripts](https://github.com/JustinTSmith/personal-scripts)
+(operator, coach, strategist), and what should happen to the work
+itself (eliminate, automate, delegate, optimize). The router maps the
+answer to an agent and a model. Public code: [personal-scripts](https://github.com/JustinTSmith/personal-scripts)
 (`mode_router.py`, `mode_classifier_llm.py`, `telegram-router.js`).
 
 ### 3. Voice pipeline
@@ -132,10 +132,12 @@ owners and dates, tasks created in the tracker. No manual review step by
 design.
 
 ### 8. Agent companies
-13 companies on Paperclip, each a workspace where agents hold roles and
-work issues, including the billing SaaS I am building. I wrote the
-OpenRouter adapter that gives every agent a real multi-turn tool-calling
-loop, API tools, and approval gating.
+13 companies on Paperclip, each a workspace where agents hold roles,
+work issues, and hand off to each other: the billing SaaS venture, a
+medical council, an equity research desk, and staffed professional
+teams (systems 13 through 15 below). Roughly 90 agents in total. I wrote
+the OpenRouter adapter that gives every agent a real multi-turn
+tool-calling loop, API tools, and approval gating.
 
 ### 9. Self-healing layer
 A watchdog daemon monitors the AI services and restarts them through
@@ -174,6 +176,53 @@ scheduler slots tasks onto the calendar, and the accountability agent
 checks in three times a day and reviews weekly. A goal here is not a
 wish; it is a config file with a supervision chain.
 
+### 13. Medical council
+Twenty years of chronic fatigue with no diagnosis is a research problem
+disguised as a medical one. I stood up a company of specialist agents:
+an internist, a neurologist, an immunologist, an endocrinologist, a
+psychiatrist, and a lead who runs the case. Each works the same evidence
+from its own discipline, they argue, and the lead forces a written
+consensus with dissent recorded rather than smoothed away.
+
+The output is a structured differential with mechanisms, probability
+ratings, and a ranked test list, written to be handed to an actual
+physician. That framing is the whole design: the council produces
+better-prepared questions, not answers. Every report says so. What it
+replaced was me arriving at appointments with a vague complaint and
+twenty years of scattered notes.
+
+The generalizable pattern, and the reason it is here: multi-specialist
+adversarial review beats a single generalist agent on any problem where
+the failure mode is a blind spot rather than a lack of information.
+
+### 14. Equity research desk
+The busiest company in the fleet by an order of magnitude. Analyst agents
+work the same securities from deliberately incompatible philosophies (a
+value discipline, technical, fundamentals, sentiment), score conviction
+independently, and a synthesis agent assembles a consensus matrix showing
+where all four agree and where they split. Disagreement is the product;
+a 4-of-4 agreement means something precisely because the analysts were
+built to argue.
+
+Output is real analyst work: signal reports, catalyst deep dives, and
+ranked shortlists with entry logic, published to PDF. It is the same
+adversarial-panel architecture as the medical council, pointed at a
+domain where being wrong is measurable.
+
+### 15. Professional service teams
+Beyond the ventures, the fleet includes staffed teams for functions I
+would otherwise buy: a product-management toolkit team where a legal
+specialist drafts NDAs and privacy policies and hands off to an editor
+before anything ships, and role-based venture teams (CEO, CTO, engineer,
+product owner, UX researcher) staffing the billing SaaS companies.
+
+Each agent has explicit instructions covering where work arrives from,
+what it produces, who it hands off to, and what triggers it. That
+four-part contract is what makes a set of agents an organization instead
+of a group chat. The legal agent's instructions end by requiring it to
+recommend qualified human counsel, which is the kind of boundary that
+has to be written into the role, not hoped for.
+
 ## Numbers
 
 - 62 registered LaunchAgents and cron jobs
@@ -182,6 +231,23 @@ wish; it is a config file with a supervision chain.
 - 4 parallel weekly intelligence scans
 - 8 voice-note categories, filed automatically
 - 3 redundant triggers on the voice pipeline alone
+- 13 agent companies, roughly 90 agents, from 3-agent teams to a 48-agent
+  professional services org
+
+## The pattern worth stealing
+
+Three of these systems (medical council, equity desk, and the goal
+engine's supervision chain) are the same architecture pointed at
+different problems: **give several agents genuinely incompatible
+priors, make them work the same evidence independently, then force a
+written synthesis that records dissent instead of averaging it away.**
+
+One agent asked to "consider multiple perspectives" produces a bland
+consensus, because it is one prior wearing costumes. Five agents with
+real disciplinary commitments produce disagreement, and the
+disagreement is the signal. That is the most portable thing I have
+learned building any of this, and it transfers directly to product
+decisions, technical review, and diligence.
 
 ## What I learned building this
 
