@@ -70,9 +70,15 @@ briefing agent at roughly 65% all-axes pass, with silent no-ops rather
 than fabrications as the dominant failure. Mechanical work stays local,
 judgment escalates, and some pipelines split one job across both.
 
+## Start here
+
+**[The Machine](the-machine.md)** is the long-form tour: eight chapters
+covering the whole system, what it taught me, and what broke. Read that
+first if you want the story rather than the map.
+
 ## Case studies
 
-The stories that explain how this machine came to exist:
+The deep dives behind the essay:
 
 - [The Assessment That Became an Operating System](case-studies/01-assessment-driven-agents.md) -
   how a psychometric profile became the design constraints for an agent fleet
