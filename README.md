@@ -308,7 +308,19 @@ books into agent-loadable form (see system 11).
 
 It runs on models chosen by measurement: local open-weight models first,
 which failed at judgment work, then a router targeting frontier models
-per job class. Full story:
+per job class.
+
+**It has run a real program.** In July it executed a 29-issue product
+program for PsychBill end to end: discovery research, segmentation,
+personas, TAM through SOM, sentiment scan, SWOT and PESTLE and Porter,
+ten product ideas, a Phase A discovery gate, then competitor landscape,
+North Star metric, business model, pricing, assumption and journey maps,
+a Phase B strategy gate, then opportunity solution tree, roadmap, OKRs,
+vision, the Phase 1 MVP PRD, user stories, and a sprint plan. All 29
+closed. The day after, those findings became committed code: a React and
+Vite MVP with an Express server, deployed through Vercel.
+
+Full story:
 [I Built the Product Org I Used to Hire](case-studies/06-product-compass.md).
 
 ### 15b. Venture teams
@@ -333,6 +345,8 @@ has to be written into the role, not hoped for.
 - 7-step research pipeline ending in a downloaded audio briefing
 - 13 agent companies, roughly 90 agents, from 3-agent venture teams to a
   48-agent product organization with its own org chart
+- 1 product program run end to end: 29 gated issues, discovery through
+  sprint plan, landing as committed code
 
 ### 16. Research to audio pipeline
 The briefing chain ends in my ears, not my inbox. A seven-step pipeline
