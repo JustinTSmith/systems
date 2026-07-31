@@ -94,6 +94,50 @@ flowchart LR
     C --> M[Phase 1 MVP<br/>in development]
 ```
 
+## The product work was done by an agent organization
+
+I did not write the PRD. I dispatched it.
+
+On 27 July a 29-issue product program went into Linear, routed to the
+specialist agents of the product organization I had built
+([Product Compass](06-product-compass.md)): discovery research plan,
+market segmentation, personas, TAM through SOM sizing, sentiment scan,
+SWOT and PESTLE and Porter, ten product ideas, then a Phase A discovery
+gate. Past the gate: competitor landscape, North Star metric, business
+model and lean canvas, metrics dashboard spec, opportunity backlog,
+pre-mortem and risk register, product strategy, pricing, assumption map,
+journey map. Then a Phase B strategy gate. Past that: opportunity
+solution tree, stakeholder map, feature landscape, outcome roadmap, two
+quarters of OKRs, the vision statement, the Phase 1 MVP PRD, user and
+job stories, and a sprint and release plan.
+
+All 29 closed. The two phase gates mattered more than any individual
+document: strategy could not start until discovery synthesized, and
+execution could not start until strategy was reviewed. That is what makes
+it a program rather than a pile.
+
+## From findings to running code
+
+The next day the findings went into the build. The commit history says
+`feat: align features and UI with clean-room product findings`, then
+`fix: point Vercel and CI at the Vite app`. The MVP is React and Vite
+with an Express server and the Anthropic SDK, deployed through Vercel.
+
+So the full chain, from a sentence typed into a chat thread:
+
+```mermaid
+flowchart LR
+    S["log: one sentence"] --> Q[Overnight research]
+    Q --> D[Decision record]
+    D --> P["Agent product org<br/>29-issue gated program"]
+    P --> A[PRD, roadmap, OKRs,<br/>stories, sprint plan]
+    A --> C[Committed code<br/>React + Vite + Express]
+```
+
+Every stage handed the next stage something it could use. That is the
+only definition of a working process I trust, and it is the part I would
+want to rebuild inside a company.
+
 ## Where it honestly stands
 
 Pre-revenue. Phase 1 MVP in active development: code recommendations
