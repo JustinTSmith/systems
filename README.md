@@ -1,8 +1,16 @@
 # The Machine
 
-69 scheduled jobs and roughly 90 agents on one Mac Studio, running
-my work, health, research, and two software ventures. This repo is the
-map: what runs, how the pieces connect, and which parts have public code.
+69 scheduled jobs and roughly 90 agents on one Mac Studio, running my
+work, health, research, and two software ventures. This repo is the map:
+what runs, how the pieces connect, and which parts have public code.
+
+I have worked on AI products for close to a decade: an AI bidding engine
+at Acquisio in 2016, a portfolio of 12 AI startups at Creative
+Destruction Lab alongside Mila in 2017, two ML models shipped to
+production at Officevibe in 2019, and the MLOps process behind a second
+production team at Workhuman in 2021. What changed in 2025 is that I
+started building the systems myself instead of directing the people who
+build them. This is what that year produced.
 
 The configs and data stay private for obvious reasons. The architecture,
 the design decisions, and a good amount of the code do not. Where a
@@ -93,6 +101,9 @@ The deep dives behind the essay:
 - [Cheap Models, Expensive Mistakes](case-studies/05-local-model-routing.md) -
   benchmarking local models against frontier ones, a 20-trial reliability
   harness, and where the local-to-cloud line actually belongs
+- [I Built the Product Org I Used to Hire](case-studies/06-product-compass.md) -
+  a 48-agent product organization with a CPO agent, and what it revealed
+  about which parts of product management specify and which do not
 
 ## The systems
 
@@ -274,12 +285,35 @@ ranked shortlists with entry logic, published to PDF. It is the same
 adversarial-panel architecture as the medical council, pointed at a
 domain where being wrong is measurable.
 
-### 15. Professional service teams
-Beyond the ventures, the fleet includes staffed teams for functions I
-would otherwise buy: a product-management toolkit team where a legal
-specialist drafts NDAs and privacy policies and hands off to an editor
-before anything ships, and role-based venture teams (CEO, CTO, engineer,
-product owner, UX researcher) staffing the billing SaaS companies.
+### 15. Product Compass: an automated product organization
+The largest single build in the fleet, and the one closest to my day job.
+A 48-agent product and go-to-market organization arranged as a real org
+chart: a Chief Product Officer agent handling intake, routing, and
+synthesis, delegating to eight VPs and Directors across Discovery,
+Strategy, Execution, Market Research, Data Analytics, Go-to-Market,
+Marketing, and PM Toolkit. Beneath them, roughly forty specialists: PRD
+Writer, Market Sizing Analyst, Pricing Strategist, Competitive
+Intelligence Analyst, OKR Specialist, Roadmap Specialist, Vision
+Strategist, User Researcher, Journey Mapper, Experiment Designer, Sprint
+Manager, QA Specialist, SQL Analyst, Battlecard Writer, Legal Specialist,
+Editor, and more.
+
+Every agent's instructions answer four questions and nothing else: where
+work comes from, what you produce, who you hand off to, what triggers
+you. That contract is what makes it an organization rather than a group
+chat. Work moves through a shared context store, event-driven by issue
+assignment with blocker-gated phases. The roster combines third-party PM
+skill packs with skills I authored by compiling product frameworks and
+books into agent-loadable form (see system 11).
+
+It runs on models chosen by measurement: local open-weight models first,
+which failed at judgment work, then a router targeting frontier models
+per job class. Full story:
+[I Built the Product Org I Used to Hire](case-studies/06-product-compass.md).
+
+### 15b. Venture teams
+The billing SaaS companies are staffed role-based: CEO, CTO, engineer,
+product owner, UX researcher, each with the same four-part contract.
 
 Each agent has explicit instructions covering where work arrives from,
 what it produces, who it hands off to, and what triggers it. That
@@ -297,8 +331,8 @@ has to be written into the role, not hoped for.
 - 8 voice-note categories, filed automatically
 - 3 redundant triggers on the voice pipeline alone
 - 7-step research pipeline ending in a downloaded audio briefing
-- 13 agent companies, roughly 90 agents, from 3-agent teams to a 48-agent
-  professional services org
+- 13 agent companies, roughly 90 agents, from 3-agent venture teams to a
+  48-agent product organization with its own org chart
 
 ### 16. Research to audio pipeline
 The briefing chain ends in my ears, not my inbox. A seven-step pipeline
