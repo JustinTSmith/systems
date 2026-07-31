@@ -21,16 +21,16 @@ The Chief Product Officer agent does not do product work. It does intake,
 routing, and synthesis, exactly like the good ones do. Its instructions
 say it delegates to eight direct reports by domain:
 
-- **VP of Product Discovery** — ideation, assumption testing, experiments,
+- **VP of Product Discovery** - ideation, assumption testing, experiments,
   user research
-- **VP of Product Strategy** — vision, business models, competitive
+- **VP of Product Strategy** - vision, business models, competitive
   analysis, pricing
-- **VP of Product Execution** — PRDs, OKRs, roadmaps, sprints, stories
-- **Director of Market Research** — personas, segmentation, journey mapping
-- **Director of Data Analytics** — SQL, A/B tests, cohort analysis
-- **Director of Go-to-Market** — GTM strategy, growth loops, battlecards
-- **Director of Marketing** — positioning, naming, metrics
-- **Director of PM Toolkit** — legal documents, proofreading, editing
+- **VP of Product Execution** - PRDs, OKRs, roadmaps, sprints, stories
+- **Director of Market Research** - personas, segmentation, journey mapping
+- **Director of Data Analytics** - SQL, A/B tests, cohort analysis
+- **Director of Go-to-Market** - GTM strategy, growth loops, battlecards
+- **Director of Marketing** - positioning, naming, metrics
+- **Director of PM Toolkit** - legal documents, proofreading, editing
 
 Beneath them sit the specialists: PRD Writer, Market Sizing Analyst,
 Pricing Strategist, Competitive Intelligence Analyst, OKR Specialist,
@@ -118,6 +118,68 @@ org now routes by job class, frontier models where judgment lives, local
 where the work is gathering and formatting. Agents call tools through a
 small API surface with approval gating on anything consequential.
 
+## Running a real product program through it
+
+The test of an agent org is not whether it can write a PRD on request. It
+is whether it can run a full product program end to end and produce
+something a build can be based on. So I pointed it at my own venture.
+
+On 27 July I dispatched a 29-issue product program for PsychBill into
+Linear. Every issue was created within about eight seconds of the others,
+because the program is instantiated as one fan-out rather than typed in
+by hand. Each issue routed to the specialist whose contract matched it.
+
+The sequence is the one I would run with a human team:
+
+**Discovery.** Research plan and customer interview script. Market
+segmentation of Canadian psychiatric billing. User personas for private
+practice psychiatrists in Ontario and BC. Market sizing, TAM through SOM.
+Public sentiment scan of existing physician billing tools. Strategic
+environment: SWOT, PESTLE, Porter's Five Forces. Solution ideation, ten
+product ideas.
+
+**Phase A gate.** A discovery readout that had to synthesize and pass
+before strategy work unblocked.
+
+**Strategy.** Competitor landscape. North Star metric and metrics tree.
+Platform and network-effects assessment. Business model and lean canvas.
+Metrics dashboard spec with a SQL starter pack. Prioritized opportunity
+backlog. Pre-mortem and risk register. Product strategy. Pricing and
+monetization. Assumption map. Journey map of the psychiatrist billing
+workflow.
+
+**Phase B gate.** Strategy review and approval.
+
+**Execution.** Opportunity solution tree. Stakeholder map. Feature
+landscape and table-stakes analysis. Outcome-based roadmap. OKRs for two
+quarters. Product vision statement. Phase 1 MVP PRD. User stories and job
+stories. Sprint and release plan.
+
+All 29 closed. The phase gates are the part I would defend hardest: work
+does not flow because an agent finished, it flows because a synthesis
+step passed. Without gates you get twenty-nine parallel documents that
+never became a program.
+
+## And then it became code
+
+The day after the program closed, the findings went into the build. The
+commit history reads `feat: align features and UI with clean-room product
+findings`, followed by `fix: point Vercel and CI at the Vite app`. The
+MVP is a React and Vite application with an Express server and the
+Anthropic SDK wired in, deployed through Vercel, currently in
+development.
+
+That is the loop I actually care about: a venture idea captured as one
+sentence, researched overnight, run through an agent product organization
+as a gated 29-issue program, and landing as committed code with a
+roadmap behind it. Every stage produced an artifact the next stage could
+use, which is the only definition of a working process I trust.
+
+Linear is the shared surface for it. The same workspace carries the
+equity research desk's diligence programs and the medical council's
+specialist reviews, so every agent company files work where I already
+look.
+
 ## The honest limits
 
 Nobody is paying for Product Compass output. It has produced real
@@ -148,7 +210,7 @@ fewer product people, it is fewer people doing production work and more
 value concentrated in whoever sets the brief.
 
 I spent fifteen years hiring for the craft. Building this convinced me
-the next fifteen are about hiring for the judgment, and that the leverage
-of a good product leader just went up rather than down.
+the next fifteen are about hiring for the judgment, and that a good
+product leader's impact just went up rather than down.
 
 The machine is mapped at [systems](https://github.com/JustinTSmith/systems).
