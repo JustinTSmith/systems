@@ -154,6 +154,10 @@ Three things transfer:
    than anyone would triage. Drill and heal are not conveniences; they
    are what makes the alerts survive contact with a busy week.
 
+You can watch the two-stage scan and the test suite run in
+[demos/01-injection-defense](../demos/01-injection-defense/), which
+renders itself from a script rather than a recording.
+
 The uncomfortable version of this case study: I built a fleet of agents
 with broad access first, and designed the security posture second. That
 is the honest sequence, and it is the same sequence most companies are

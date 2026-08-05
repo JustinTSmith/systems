@@ -84,6 +84,13 @@ split a single job across both.
 covering the whole system, what it taught me, and what broke. Read that
 first if you want the story rather than the map.
 
+## Demos
+
+[demos/](demos/) has terminal captures of two of these systems running.
+Each one renders from a script, so the GIF regenerates against the
+current state of the machine instead of aging into a claim I can no
+longer reproduce.
+
 ## Case studies
 
 The deep dives behind the essay:
@@ -190,6 +197,10 @@ behind it.
 
 The design goal is that I hear about a breakage from a log entry
 instead of from three weeks of silence.
+
+A run of it, uncurated, is in
+[demos/02-platform-health](demos/02-platform-health/), along with two
+bugs the capture exposed in the reporter itself.
 
 ### 10. Local inference and model routing
 Two local servers run alongside the cloud models: Ollama and an MLX

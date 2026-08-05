@@ -1,6 +1,6 @@
 # The Machine
 
-*One operator, sixty-nine unattended jobs, and roughly ninety agents on a
+*One operator, seventy-three unattended jobs, and roughly ninety agents on a
 Mac Studio in Squamish. What I built, what it taught me, and what broke
 along the way.*
 
@@ -25,8 +25,8 @@ which I learned by getting it wrong first.
 ## Chapter 1: What is actually running
 
 There is a Mac Studio in my office that does not turn off. On it:
-sixty-nine scheduled jobs, which breaks down as forty-three LaunchAgents,
-fourteen cron entries, and twelve agent jobs. Roughly ninety agents
+seventy-three scheduled jobs, which breaks down as forty-one LaunchAgents,
+fourteen cron entries, and eighteen agent jobs. Roughly ninety agents
 spread across thirteen agent companies. Two local model servers, a
 Postgres instance, a Redis instance, a memory server, and a gateway.
 
@@ -364,7 +364,7 @@ relaunch that booked $650K before it fully launched. Good work, all of it
 done by specifying and persuading rather than building.
 
 In 2025 I stopped waiting for engineering capacity and started building
-it myself. The result is not elegant. It is sixty-nine scheduled jobs
+it myself. The result is not elegant. It is seventy-three scheduled jobs
 held together by watchdogs, a memory layer I fought into reliability, and
 a security posture that exists because I kept finding my own outages by
 accident and decided that finding them should be somebody's standing job.
