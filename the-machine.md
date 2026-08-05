@@ -228,55 +228,7 @@ Full findings, including the hypothesis I got wrong, are in
 
 ---
 
-## Chapter 6: I gave them the keys before I designed the locks
-
-There is a moment where you take inventory of what you have handed out.
-Mine went roughly: these agents can read my inbox, write to my files, run
-shell commands, reach the network, and post as me in a channel I read
-every day. Any of them can be reached by content I did not write, because
-reading the internet is the job.
-
-That is not a hypothetical attack surface. That is a production system
-with my life in it, assembled one convenient integration at a time.
-
-An audit found two things that set the design. Credentials had spread: a
-single token had propagated into roughly ten places across config files,
-environment files, scripts, and logs. And a service had failed silently
-for days, because two processes were polling the same bot and knocking
-each other offline in a loop. From outside it looked like the assistant
-had simply gone quiet, which is indistinguishable from having nothing to
-say.
-
-Neither is exotic. Both are the ordinary way personal infrastructure
-decays: secrets sprawl and failures go unobserved.
-
-The posture that came out of it has six layers, but one decision matters
-more than the rest. Prompt injection defense runs in two stages: cheap
-regex first, then a language model verdict on anything that survives. The
-important part is not that a model does the judging. It is which model,
-in which context.
-
-The scan runs as a separate call, in a fresh context, with the suspicious
-content quoted as data. The agent that would have received the content
-never sees it unless it passes.
-
-Because the alternative is incoherent. If you ask an agent to evaluate
-whether the message it just read was an attack, you have already given
-the attack its opportunity. The content is in the context, and the same
-instruction-following behavior you are testing is the behavior doing the
-testing. An agent cannot be trusted to assess an attack aimed at itself,
-any more than a compromised host can be trusted to report that it is
-compromised.
-
-The rest is tuning. That one separation is the idea.
-
-The whole posture, and the fail-open bug I found in my own code while
-writing it up, is in
-[I Gave Agents My Email and Shell Access](../case-studies/04-agent-security.md).
-
----
-
-## Chapter 7: What broke
+## Chapter 6: What broke
 
 Every system above has a version of this section, and the sections are
 more useful than the architecture.
@@ -299,12 +251,6 @@ the other gets replaced.
 exact shape. Anything else was ignored with no error and no log. I found
 out by noticing absences, which is the worst way to find anything out.
 
-**A security control that failed open.** Three code paths in my injection
-scanner returned "not blocked" when the scan produced no verdict at all.
-The comment above one of them said "fail closed." The code did the
-opposite. High-risk sources, email and external links, were exactly the
-ones sailing through.
-
 **A router that was never running.** I built a classifier-based message
 router, wrote about it as a live system, and then discovered while
 preparing a demo that nothing referenced it, it could not import, and its
@@ -321,20 +267,10 @@ becoming a museum.
 
 ---
 
-## Chapter 8: What transfers
+## Chapter 7: What transfers
 
 If you are making these decisions for a team rather than a personal
-setup, four things carried over cleanly.
-
-**Separate the judge from the target.** Any component asked to evaluate
-content is compromised by holding that content. This goes well beyond
-prompt injection. It is the same reason you do not let a service grade
-its own health check.
-
-**Control the exits, not the decisions.** You cannot make a probabilistic
-system reliably choose not to leak. You can enumerate every place data
-leaves and filter all of them. Decisions are probabilistic. Exits are
-countable.
+setup, two things carried over cleanly.
 
 **Route by verifiability, not by cost.** "Use the cheap model where
 possible" produces the wrong answer, because the cheapest place to use it
@@ -365,9 +301,10 @@ done by specifying and persuading rather than building.
 
 In 2025 I stopped waiting for engineering capacity and started building
 it myself. The result is not elegant. It is seventy-three scheduled jobs
-held together by watchdogs, a memory layer I fought into reliability, and
-a security posture that exists because I kept finding my own outages by
-accident and decided that finding them should be somebody's standing job.
+held together by watchdogs and a memory layer I fought into reliability,
+with a health reporter that exists because I kept finding my own outages
+by accident and decided that finding them should be somebody's standing
+job.
 
 But it runs. It has been running for months. And every design decision in
 it traces back to a specific way I fail, measured rather than assumed,
@@ -375,8 +312,8 @@ which turns out to be a reasonable way to build software for anyone.
 
 ---
 
-*The full architecture map, all five case studies, and links to the
-public code are at
+*The full architecture map, all case studies, and links to the public
+code are at
 [github.com/JustinTSmith/systems](https://github.com/JustinTSmith/systems).*
 
 *Justin Smith is a product leader who ships AI systems. Squamish, BC.

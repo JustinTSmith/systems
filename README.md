@@ -54,8 +54,6 @@ flowchart TD
     subgraph Reliability
         WD[ai_watchdog<br/>auto-restart via launchctl]
         PH[platform_health nightly<br/>+ hourly git push]
-        SC[security_council nightly<br/>6 collectors, 4 AI perspectives]
-        SEC[injection defense<br/>+ outbound redaction]
         DASH[services dashboard]
     end
 
@@ -68,7 +66,6 @@ flowchart TD
     WB --> CALL
     WD -.watches.-> Agents
     WD -.watches.-> Pipelines
-    SEC -.guards.-> Agents
 ```
 
 Local models (Ollama, MLX) handle mechanical work at zero marginal cost.
@@ -80,16 +77,16 @@ split a single job across both.
 
 ## Start here
 
-**[The Machine](the-machine.md)** is the long-form tour: eight chapters
+**[The Machine](the-machine.md)** is the long-form tour: seven chapters
 covering the whole system, what it taught me, and what broke. Read that
 first if you want the story rather than the map.
 
 ## Demos
 
-[demos/](demos/) has terminal captures of two of these systems running.
-Each one renders from a script, so the GIF regenerates against the
-current state of the machine instead of aging into a claim I can no
-longer reproduce.
+[demos/](demos/) has a terminal capture of one of these systems running.
+It renders from a script, so the GIF regenerates against the current
+state of the machine instead of aging into a claim I can no longer
+reproduce.
 
 ## Case studies
 
@@ -102,9 +99,6 @@ The deep dives behind the essay:
 - [One Sentence In, One Company Out](case-studies/03-psychbill-idea-to-company.md) -
   how one logged sentence became PsychBill, through the overnight queue,
   a PRD, a revenue model, and an agent company
-- [I Gave Agents My Email and Shell Access. Then I Designed for It.](case-studies/04-agent-security.md) -
-  two-stage prompt injection defense, outbound redaction, and why the
-  scanner must never judge for itself
 - [Cheap Models, Expensive Mistakes](case-studies/05-local-model-routing.md) -
   benchmarking local models against frontier ones, a 20-trial reliability
   harness, and where the local-to-cloud line actually belongs
@@ -401,47 +395,11 @@ concrete actions. Without it, the generated audio drifts into summary.
 Related public output:
 [weekly-briefings](https://github.com/JustinTSmith/weekly-briefings).
 
-### 17. Agent security layer
-A fleet of agents with tool access, shell permissions, and my email has
-a security posture whether or not anybody sat down and chose one. I sat
-down and chose one. It has six layers:
-
-1. Gateway hardening, meaning the network surface the agents listen on
-2. Channel access control, governing which channels may reach which
-   agents
-3. Prompt injection defense, in two stages: regex patterns first, then a
-   semantic scanner that sends suspicious content to a separate LLM for
-   judgment. Content under suspicion is never evaluated inside the
-   context it is trying to attack, because an agent cannot be trusted to
-   assess an attack aimed at itself.
-4. Secret protection: an outbound redactor strips API keys, tokens, and
-   passwords from anything an agent sends, a PII redactor removes
-   emails, phones, addresses, and financial identifiers, and a
-   pre-commit hook blocks secrets from reaching git
-5. Automated monitoring, with a health check every 30 minutes and a
-   nightly review
-6. System prompt rules, the behavioral constraints every agent inherits,
-   versioned as a file rather than remembered
-
-A nightly security council orchestrates this: six static collectors
-(secrets, permissions, code execution surface, config audit, git
-history, log anomalies) run in parallel, then four separate AI
-perspectives analyze the findings (Red Team, Blue Team, Data Privacy,
-and Operational Realism), then a synthesis pass produces a
-numbered digest with the same drill-and-heal interface as the health
-reporter.
-
-I built this after an audit found real problems: credentials that had
-leaked into roughly ten places and needed rotating, and a service
-misconfiguration that silently broke a channel for days. Both are fixed
-now. The layer exists because I kept finding my own mistakes by
-accident, and I decided finding them should be somebody's standing job.
-
 ## The pattern worth stealing
 
-Four of these systems (medical council, equity desk, the security
-council's four analytic perspectives, and the goal engine's supervision
-chain) run the same architecture pointed at different problems. Give
+Three of these systems (medical council, equity desk, and the goal
+engine's supervision chain) run the same architecture pointed at
+different problems. Give
 several agents genuinely incompatible priors, make them work the same
 evidence independently, then force a written synthesis that records
 dissent instead of averaging it away.

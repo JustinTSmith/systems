@@ -43,24 +43,28 @@ on in one step is a finding I will not act on. Every monitoring system I
 have watched fail, failed by producing more signal than anyone would
 triage.
 
-## What is broken about it right now
+## What the capture exposed, and what I fixed
 
-Two things visible in that GIF, both mine, neither fixed yet:
+Two bugs were visible in the GIF, both mine:
 
-**`--dry-run` only changes delivery, not behavior.** It prints to stdout
-instead of Telegram, but the auto-fix path still executes. A flag named
-`--dry-run` that repairs things is a trap I set for myself. It needs a
-`--no-fix` flag, or the auto-fix needs to respect the one that exists.
+**`--dry-run` only changed delivery, not behavior.** It printed to
+stdout instead of Telegram, but the auto-fix path still executed. A flag
+named `--dry-run` that repairs things is a trap I set for myself. Fixed:
+the heal loop now skips entirely under `--dry-run`.
 
-**The auto-fixer reports success on failure.** The Auto-Fixed block shows
-two green checkmarks over a commit that failed and a push that was
-rejected. The fix function returns its output message rather than its
-exit status, so any attempt counts as a repair. That is the same class of
-bug as the fail-open scanner in [demo 1](../01-injection-defense/): the
-error path was never the path anyone tested.
+**The auto-fixer reported success on failure.** The Auto-Fixed block in
+the capture shows two green checkmarks over a commit that failed and a
+push that was rejected. The fix function returned its output message
+rather than its exit status, so any attempt counted as a repair. Fixed:
+it now tracks success per step and returns false if either the commit or
+the push fails. That bug had been masking a real outage: one of my repos
+was hundreds of commits behind its remote because the push had been
+failing silently, reported as fixed every night.
 
-I left both in the capture. A monitoring demo that hides the monitor's
-own bugs is advertising, not evidence.
+I left the original capture in place rather than re-rendering a clean
+one. A monitoring demo that hides the monitor's own bugs is advertising,
+not evidence, and the fix is documented here instead of edited out of
+the frame.
 
 ## Do not show
 
